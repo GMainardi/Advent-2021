@@ -12,4 +12,4 @@ for command, value in input:
     else:
         print('nao deveria estar aqui')
 
-print(pos[0]*pos[1])
+print(pos[0] * pos[1])
