@@ -70,7 +70,7 @@ def nine(list):
 
 def zero(list):
     for i in range(len(list)):
-        if len(list[i]) == 6 and len(intersec(list[i], number[9])) == 5 and len(intersec(list[i], number[1])) == 2:
+        if len(list[i]) == 6 and len(intersec(list[i], number[1])) == 2:
             number[0] = ''.join(sorted(list[i]))
             del list[i]
             return
