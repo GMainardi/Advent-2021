@@ -39,6 +39,41 @@ def show(dots):
         print()
     print()
 
+def to_mat(dots):
+    a, b = max(dots)
+    mat = []
+    for x in range(a):
+        mat.append('')
+        for y in range(b):
+            if (x, y) in dots:
+                mat[x] += '#'
+            else:
+                mat[x] += '.'
+    return mat
+
+def split_letters(mat):
+    letters = []
+    start = 0
+    end = 4
+    while end <= len(mat[0]):
+        letter = ''
+        for line in range(len(mat)):
+            letter += mat[line][start:end]
+        letters.append(letter)
+        start += 5
+        end += 5
+    return letters
+
+def get_alpha(f):
+    alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    start = 0
+    letters = {}
+    for i in range(26):
+        letter = ''.join(f[start:start+6])
+        letters[letter] = alpha[i]
+        start += 7
+    return letters
+
 input = [line.strip() for line in open('input.txt', 'r')]
 
 first = True
@@ -56,4 +91,12 @@ for line in input:
 for f in folds:
     dots = fold(dots, f[0], f[1])
 
+f = [line.strip() for line in open('letters.txt')]
+
 show(dots)
+
+out = split_letters(to_mat(dots))
+gab = get_alpha(f)
+
+for letter in out:
+    print(gab[letter], end='')
