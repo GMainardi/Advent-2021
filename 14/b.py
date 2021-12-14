@@ -35,6 +35,7 @@ for l in template:
 for pair in get_pairs(template):
     pairs_frequencies[pair] = pairs_frequencies.get(pair, 0) + 1
 
+
 for i in range(40):
     pairs_frequencies = step(pairs_frequencies, rules, frequencies)
 
