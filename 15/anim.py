@@ -1,4 +1,9 @@
 from heapq import heappop, heappush
+from termcolor import colored
+import sys
+import time
+
+FULL_blOCK = bytes((219,)).decode('cp437')
 class Graph:
     nodes = {}
 
@@ -51,51 +56,47 @@ def find_path(g : Graph, init):
             if new_value < dist[nxt]:
                 dist[nxt] = new_value
                 prev[nxt] = curr
+                p = get_path(prev, nxt)
+                show_mat(mat, p)
                 heappush(Q, (new_value, nxt))
     
-    return dist
+    return dist, prev
+
+
+def get_path(path, node):
+    l = [(0,0)]
+    while node != (0,0):
+        l.append(node)
+        node = path[node]
+    l.append(node)
+    return l
+
+def show_mat(mat, path):
+    string = colored('', 'white')
+    for x in range(len(mat)):
+        for y in range(len(mat[0])):
+            if (x, y) in path:
+                string += colored(FULL_blOCK, 'red')
+            else:
+               string += colored(FULL_blOCK, 'white')
+        string += colored('\n', 'white')
+    sys.stdout.write("\033[F"*(50))
+    print(string)
+    time.sleep(0.05)
 
 def valid(x, y, maxX, maxY):
     return x > -1 and y > -1 and x < maxX and y < maxY
 
-def increse(mat):
-    for x in range(len(mat)):
-        for y in range(len(mat[0])):
-            if mat[x][y] == 9:
-                mat[x][y] = 1
-            else:
-                mat[x][y] += 1
-    return mat
-
-def show(mat):
-    for x in range(len(mat)):
-        for y in range(len(mat[0])):
-            print(mat[x][y], end ='')
-        print()
-
 mat = []
-for line in open('input.txt', 'r'):
+for line in open('anim.txt', 'r'):
     line = line.strip()
     mat.append([int(number) for number in line])
 
-inc_mat = [line.copy() for line in mat]
-
-for x in range(4):
-    inc_mat = increse(inc_mat)
-    for line in range(len(mat)):
-        mat[line] = [*mat[line], *inc_mat[line]]
-
-inc_mat = [line.copy() for line in mat]
-
-for x in range(4):
-    inc_mat = increse([line.copy() for line in inc_mat])
-    mat.extend(inc_mat)
-
-
 g = Graph(mat)
 
+sys.stdout.write("\x1b[1A\x1b[2K"*31)
+
+d, path = find_path(g, (0, 0))
+
 last = ((len(mat)-1), len(mat[0])-1)
-
-dist = find_path(g, (0, 0))[last]
-
-print(dist)
+show_mat(mat, get_path(path, last))
