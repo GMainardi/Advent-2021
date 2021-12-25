@@ -37,7 +37,7 @@ def block_is_1(block):
     line = block[4].split(' ')
     return int(line[2]) == 1
 
-input = [line.strip() for line in open('input_test.txt', 'r')]
+input = [line.strip() for line in open('input.txt', 'r')]
 blocks = [input[i:i + 18] for i in range(0, len(input), 18)]
 
 
